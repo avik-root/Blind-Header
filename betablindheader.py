@@ -6,7 +6,7 @@ import random
 
 banner1 = pyfiglet.figlet_format("BlindHeader", font="small")
 banner2 = pyfiglet.figlet_format("by avik-root", font="digital")
-banner3 = pyfiglet.figlet_format("Version 1.5", font="digital")
+banner3 = pyfiglet.figlet_format("Version 2.1", font="digital")
 banner4 = pyfiglet.figlet_format("BETA", font="digital")
 
 def random_color():
@@ -78,13 +78,13 @@ def check_headers(url):
         if enabled_count == 5:
             grade = colored("A+", 'green')
         elif enabled_count == 4:
-            grade = colored("A", 'light_green')
+            grade = colored("A", 'green')
         elif enabled_count == 3:
             grade = colored("B", 'yellow')
         elif enabled_count == 2:
-            grade = colored("C", 'orange')
+            grade = colored("C", 'yellow')
         else:
-            grade = colored("F", 'red') 
+            grade = colored("F", 'red')
         result += f"Overall Grade: {grade}\n"
         print(result)
         with open("history.txt", "a") as file:
