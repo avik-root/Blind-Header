@@ -1,2 +1,2 @@
 # Blind-Header
-It'a tool for checking the websites headers.
+It'a open source tool for checking the websites headers.
