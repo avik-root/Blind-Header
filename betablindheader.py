@@ -6,7 +6,7 @@ import random
 
 banner1 = pyfiglet.figlet_format("BlindHeader", font="small")
 banner2 = pyfiglet.figlet_format("by avik-root", font="digital")
-banner3 = pyfiglet.figlet_format("Version 2.1", font="digital")
+banner3 = pyfiglet.figlet_format("Version 2", font="digital")
 banner4 = pyfiglet.figlet_format("BETA", font="digital")
 
 def random_color():
@@ -55,7 +55,8 @@ def check_headers(url):
         "X-Frame-Options",
         "X-Content-Type-Options",
         "Referrer-Policy",
-        "Permissions-Policy"
+        "Permissions-Policy",
+        "Strict-Transport-Security"  
     ]
     try:
         local_ip = get_local_ip()
@@ -75,33 +76,52 @@ def check_headers(url):
                 result += f"{header}: {colored('Enabled', 'green')}\n"
             else:
                 result += f"{header}: {colored('Disabled', 'red')}\n"
-        if enabled_count == 5:
+        if enabled_count == 6:  
             grade = colored("A+", 'green')
-        elif enabled_count == 4:
+        elif enabled_count == 5:
             grade = colored("A", 'green')
-        elif enabled_count == 3:
+        elif enabled_count == 4:
             grade = colored("B", 'yellow')
-        elif enabled_count == 2:
+        elif enabled_count == 3:
             grade = colored("C", 'yellow')
         else:
             grade = colored("F", 'red')
         result += f"Overall Grade: {grade}\n"
         print(result)
         with open("history.txt", "a") as file:
+            file.write(url + "\n")
             file.write(result + "\n")
         return result
     except requests.exceptions.RequestException as e:
         print(f"Error: Could not connect to {url}")
         return ""
 
+def check_history(url):
+    try:
+        with open("history.txt", "r") as file:
+            history = file.read()
+            if url in history:
+                return True
+            return False
+    except FileNotFoundError:
+        return False
+
 def main():
     print(random_color() + banner1 + "\033[0m")
     print(random_color() + banner2 + "\033[0m")
     print(f"{random_color()}{banner3}\033[0m" + f"\033[91m{banner4}\033[0m")
     print("\033[91mGithub: https://github.com/avik-root\033[0m\n\n")
+    
     while True:
         url = input("Enter the website URL (with http/https): ").strip()
+        if check_history(url):
+            choice = input(f"The URL '{url}' is already in history. Do you want to scan it again? (y/n): ").strip().lower()
+            if choice != 'y':
+                print(f"Skipping scan for {url}.")
+                continue
+        
         check_headers(url)
+        
         continue_choice = input("Do you want to check another website? (y/n): ").strip().lower()
         if continue_choice != 'y':
             print("Exiting the program, waka waka ee ee.")
